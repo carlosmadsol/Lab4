@@ -27,15 +27,20 @@ void findLargestLine(int **matrix, int size, int *result) {
     *result = contadorMax;  // Guarda el resultado en el puntero de 'result'
 }
 
+void allocateMatrix(int ***matrix, int size) { // Funcion que va a reservar la matriz en una memoria dinamica
+    *matrix = (int **)malloc(size * sizeof(int *)); // Calculamos el size en filas de la matriz y lo asignamos a un bloque de puntero (int **) que van a redirigir a cada fila
+    for (int i = 0; i < size; i++) { // Para guardar cada fila de la matriz
+        (*matrix)[i] = (int *)malloc(size * sizeof(int *)); // Guardamos cada una de las filas en (int *) y su informacion para formar la matriz
+    }
+}
+
 int main() {
     int size = 5;  // Define un tamaño para la matriz
-    int **matrix = malloc(size * sizeof(int *));
-    for (int i = 0; i < size; i++) {
-        matrix[i] = malloc(size * sizeof(int));
-    }
+    int **matrix;
 
-    // Rellenar la matriz con valores aleatorios para ejemplo como en el lab 3
-    srand(time(NULL));
+    allocateMatrix(&matrix, size); // Llamamos la funcion de allocateMatrix
+    
+    srand(time(NULL)); // Rellenar la matriz con valores aleatorios para ejemplo como en el lab 3
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             matrix[i][j] = rand() % 2;  // Rellenar con 0s y 1s
