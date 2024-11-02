@@ -34,28 +34,51 @@ void allocateMatrix(int ***matrix, int size) { // Funcion que va a reservar la m
     }
 }
 
-int main() {
-    int size = 5;  // Define un tamaño para la matriz
-    int **matrix;
-
-    allocateMatrix(&matrix, size); // Llamamos la funcion de allocateMatrix
-    
-    srand(time(NULL)); // Rellenar la matriz con valores aleatorios para ejemplo como en el lab 3
+void fillMatrix (int **matrix, int size){ //Este es el mismo codigo usado en el laboratorio 3 por lo que no me extendere en detalles
+    srand(time(NULL));
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
-            matrix[i][j] = rand() % 2;  // Rellenar con 0s y 1s
+            matrix[i][j] = rand() % 2; 
         }
     }
+}
+
+// Esta funcion viene en el documento y muestra la matriz
+void printMatrix (int **matrix, int size){
+    printf("Matriz (%dx%d):\n", size, size);
+    for (int i = 0; i < size ; i++){
+        for (int j = 0; j < size ; j++){
+            printf("%d ", *(*(matrix + i) + j));
+        }
+        printf("\n");
+    }
+}
+// Esta funcion viene en el documento y libera espacio en la memoria
+void freeMatrix (int **matrix, int size) {
+    for (int i = 0; i < size ; i++){
+        free (matrix [i]);
+    }
+    free(matrix);
+}
+// En los codigos pasados del ejercicio4 ya estaba esta funcion solo que en el main
+
+int main() {
+    int size;  // Define un tamaño para la matriz
+    int **matrix = NULL;
+    
+    printf("Ingresa el tamaño de la matriz: ");
+    scanf("%d", &size);
+ 
+    allocateMatrix(&matrix, size); // Llamamos la funcion de allocateMatrix
+    fillMatrix(matrix, size);
+    printMatrix(matrix, size);
 
     int largestLine;
     findLargestLine(matrix, size, &largestLine);
     printf("La secuencia más larga de 1s consecutivos es: %d\n", largestLine);
 
-    // Liberar memoria
-    for (int i = 0; i < size; i++) {
-        free(matrix[i]);
-    }
-    free(matrix);
+    freeMatrix(matrix, size);
 
     return 0;
+
 }
